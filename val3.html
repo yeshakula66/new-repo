@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#ffd6e7;
+    font-family:Arial, Helvetica, sans-serif;
+    overflow:hidden;
+}
+
+/* Floating hearts */
+.heart{
+    position:fixed;
+    bottom:-10px;
+    color:#ff4d79;
+    animation:floatUp 4s linear infinite;
+}
+@keyframes floatUp{
+    0%{transform:translateY(0);opacity:1;}
+    100%{transform:translateY(-100vh);opacity:0;}
+}
+
+.card{
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,0.1);
+    width:340px;
+}
+
+.teddy{
+    width:90px;
+    margin-top:-80px;
+}
+
+.buttons{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-top:20px;
+}
+
+.btn{
+    border:none;
+    border-radius:25px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+#yes{
+    background:#ff4d79;
+    color:white;
+    font-size:16px;
+    padding:12px 25px;
+}
+
+#no{
+    background:#eee;
+    font-size:16px;
+    padding:12px 25px;
+}
+
+#msg{
+    margin-top:20px;
+    color:#ff4d79;
+    font-weight:bold;
+    min-height:30px;
+}
+
+/* Music panel */
+.music-panel{
+    background:#fff0f5;
+    padding:15px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <img class="teddy" src="https://cdn-icons-png.flaticon.com/512/3468/3468377.png">
+
+    <h2>Tippuu, will you be my valentine? ❤️</h2>
+
+    <div class="buttons">
+        <button class="btn" id="yes" onclick="love()">Yes ❤️</button>
+        <button class="btn" id="no">No</button>
+    </div>
+
+    <p id="msg"></p>
+</div>
+
+<script>
+const yesBtn = document.getElementById("yes");
+const noBtn = document.getElementById("no");
+const msg = document.getElementById("msg");
+
+let yesFont = 16;
+let yesPad = 12;
+
+let noFont = 16;
+let noPad = 12;
+let noOpacity = 1;
+
+const texts = [
+  "Why endukuuu 🥺",
+  "Come onnn jessiiii 😭",
+  "You know I love you nenuu idhi manam 8 years unnapudu cheyalsindhi ❤️",
+  "Pleaseeee karthikk 🙏",
+  "Don't break my heart 💔",
+  "You want me to cry? 😢",
+  "Last chance 😳"
+];
+
+let i = 0;
+
+noBtn.addEventListener("click", ()=>{
+
+  msg.innerText = texts[i % texts.length];
+  i++;
+
+  /* YES grows */
+  yesFont += 3;
+  yesPad += 2;
+  yesBtn.style.fontSize = yesFont+"px";
+  yesBtn.style.padding = yesPad+"px "+(yesPad+12)+"px";
+
+  /* NO shrinks slowly */
+  noFont -= 1;
+  noPad -= 1;
+  noOpacity -= 0.07;
+
+  if(noFont < 6) noFont = 6;
+  if(noPad < 4) noPad = 4;
+
+  noBtn.style.fontSize = noFont+"px";
+  noBtn.style.padding = noPad+"px "+(noPad+10)+"px";
+  noBtn.style.opacity = noOpacity;
+
+  if(noOpacity <= 0){
+      noBtn.style.display="none";
+      msg.innerText="Fine… I’ll take that as a YES 😌❤️";
+  }
+});
+
+/* YES CLICK */
+function love(){
+  document.body.innerHTML = `
+  <div style="
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    background:#ffd6e7;
+    text-align:center;
+  ">
+
+    <h1 style="color:#ff4d79;">You chose YES 😍❤️</h1>
+
+    <!-- Cat kiss GIF -->
+    <img 
+      src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif"
+      width="320"
+      style="border-radius:20px;margin:20px;"
+    >
+
+    <!-- Music Panel -->
+    <div class="music-panel">
+      <p>🎵 Playing your song</p>
+
+      <audio controls autoplay loop>
+        <source src="aaja.mp3" type="audio/mpeg">
+      </audio>
+    </div>
+
+  </div>`;
+}
+
+/* Floating hearts */
+function createHeart(){
+    const heart=document.createElement("div");
+    heart.className="heart";
+    heart.innerHTML="❤️";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.fontSize=(15+Math.random()*25)+"px";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),4000);
+}
+setInterval(createHeart,250);
+</script>
+
+</body>
+</html>
